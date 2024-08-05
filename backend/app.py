@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
@@ -23,6 +23,10 @@ if known_face_features is None:
     known_face_features = []
 if known_face_names is None:
     known_face_names = []
+
+@app.route('/')
+def render():
+    return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_image():

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Face Recognition</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    p {
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .message-success {
+      color: green;
+      background-color: #e0f7e0;
+      border: 1px solid green;
+    }
+    .message-error {
+      color: red;
+      background-color: #f7e0e0;
+      border: 1px solid red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Face Recognition</h1>
+  <form id="upload-form">
+    <input type="file" id="file-upload" />
+    <button type="submit">Upload</button>
+  </form>
+  <form id="recognize-form">
+    <input type="file" id="file-recognize" />
+    <button type="submit">Recognize</button>
+  </form>
+  <p id="message"></p>
+
+  <script>
+    document.getElementById('upload-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById('file-upload');
+      const file = fileInput.files[0];
+      const messageElement = document.getElementById('message');
+      messageElement.classList.remove('message-success', 'message-error');
+      
+      if (!file) {
+        messageElement.textContent = 'Please select a file to upload';
+        messageElement.classList.add('message-error');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const res = await axios.post('/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        messageElement.textContent = res.data.message;
+        messageElement.classList.add('message-success');
+      } catch (err) {
+        messageElement.textContent = 'Error uploading file';
+        messageElement.classList.add('message-error');
+      }
+    });
+
+    document.getElementById('recognize-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById('file-recognize');
+      const file = fileInput.files[0];
+      const messageElement = document.getElementById('message');
+      messageElement.classList.remove('message-success', 'message-error');
+
+      if (!file) {
+        messageElement.textContent = 'Please select a file to recognize';
+        messageElement.classList.add('message-error');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const res = await axios.post('/recognize', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        if (res.status === 200) {
+          messageElement.textContent = `Face recognized: ${res.data.name}`;
+          messageElement.classList.add('message-success');
+        } else {
+          messageElement.textContent = res.data.message;
+          messageElement.classList.add('message-error');
+        }
+      } catch (err) {
+        messageElement.textContent = 'Error recognizing file';
+        messageElement.classList.add('message-error');
+      }
+    });
+  </script>
+</body>
+</html>
