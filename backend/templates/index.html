@@ -4,14 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Face Recognition</title>
+    <link
+      rel="icon"
+      href="https://img.freepik.com/premium-vector/abstract-facial-recognition-blue-background_23-2148209493.jpg?w=360"
+    />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
+      :root {
+        margin: 0;
+        padding: 0;
+      }
+      .footer {
+        display: flex;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        align-items: bottom;
+        justify-content: center;
+      }
       body {
         font-family: Arial, sans-serif;
-        padding: 20px;
-      }
-      h1 {
-        margin-bottom: 20px;
+        padding-top: 10px;
+        width: 100%;
+        height: 100vh;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url("https://www.joonsquare.com/usermanage/image/business/nirmala-matha-convent-mat-hr-sec-school-coimbatore-9220/nirmala-matha-convent-mat-hr-sec-school-coimbatore-nirmala-matha-matric-hr-sec-school-5.jpg");
       }
       form {
         margin-bottom: 20px;
@@ -41,21 +62,32 @@
         background-color: #f7e0e0;
         border: 1px solid red;
       }
+      .base {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
     </style>
   </head>
   <body>
-    <h1>Face Recognition</h1>
-    <form id="upload-form">
-      <input type="file" id="file-upload" />
-      <img id="upload-preview" />
-      <button type="submit">Upload</button>
-    </form>
-    <form id="recognize-form">
-      <input type="file" id="file-recognize" />
-      <img id="recognize-preview" />
-      <button type="submit">Recognize</button>
-    </form>
-    <p id="message"></p>
+    <div class="base">
+      <h1>Nirmala Matha Convent Matriculation Higher Secondary school</h1>
+      <h2 class="heading">Face Authentication System</h2>
+      <form id="upload-form">
+        <input type="file" id="file-upload" />
+        <img id="upload-preview" />
+        <button type="submit">Upload</button>
+      </form>
+      <form id="recognize-form">
+        <input type="file" id="file-recognize" />
+        <img id="recognize-preview" />
+        <button type="submit">Recognize</button>
+      </form>
+      <p id="message"></p>
+    </div>
+    <footer class="footer">
+      <h3>&copy; Sharathi V. 12-A</h3>
+    </footer>
 
     <script>
       document.getElementById("file-upload").addEventListener("change", (e) => {
@@ -143,14 +175,14 @@
               },
             });
             if (res.status === 200) {
-              messageElement.textContent = `Face recognized: ${res.data.name}`;
+              messageElement.textContent = `Face-Match`;
               messageElement.classList.add("message-success");
             } else {
               messageElement.textContent = res.data.message;
               messageElement.classList.add("message-error");
             }
           } catch (err) {
-            messageElement.textContent = "Error recognizing file";
+            messageElement.textContent = "Face-Mismatch";
             messageElement.classList.add("message-error");
           }
         });
